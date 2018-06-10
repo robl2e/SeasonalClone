@@ -3,14 +3,9 @@ package com.robl2e.seasonalclone.ui.main
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import com.bumptech.glide.Glide
-import com.robl2e.seasonalclone.R
-
 import com.robl2e.seasonalclone.data.produce.ProduceItem
-import com.robl2e.seasonalclone.util.inflateLayout
-import kotlinx.android.synthetic.main.item_produce.view.*
-import kotlinx.android.synthetic.main.item_produce_header.view.*
+import com.robl2e.seasonalclone.ui.main.item.BrowseItemView
+import com.robl2e.seasonalclone.ui.main.item.HeaderItemView
 import java.util.*
 
 /**
@@ -59,12 +54,10 @@ class ProduceListAdapter(private var items: List<ProduceItem>) : RecyclerView.Ad
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_HEADER -> {
-                val itemView = parent?.context?.inflateLayout(R.layout.item_produce_header, parent)
-                HeaderViewHolder(itemView)
+                SimpleViewHolder(HeaderItemView.inflate(parent))
             }
             else -> {
-                val itemView = parent?.context?.inflateLayout(R.layout.item_produce, parent)
-                ItemViewHolder(itemView)
+                SimpleViewHolder(BrowseItemView.inflate(parent))
             }
         }
     }
@@ -76,14 +69,14 @@ class ProduceListAdapter(private var items: List<ProduceItem>) : RecyclerView.Ad
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         when (holder?.itemViewType) {
             VIEW_TYPE_HEADER -> {
+                val itemVH = holder as SimpleViewHolder<HeaderItemView>
                 val produce = itemsWithHeaders[position] as String
-                val itemVH = holder as HeaderViewHolder
-                itemVH.bindItem(produce)
+                itemVH.view.headerName = produce
             }
-            VIEW_TYPE_ITEM -> {
+            else -> {
+                val itemVH = holder as SimpleViewHolder<BrowseItemView>
                 val produce = itemsWithHeaders[position] as ProduceItem
-                val itemVH = holder as ItemViewHolder
-                itemVH.bindItem(produce)
+                itemVH.view.produceItem = produce
             }
         }
     }
@@ -96,23 +89,9 @@ class ProduceListAdapter(private var items: List<ProduceItem>) : RecyclerView.Ad
         return VIEW_TYPE_HEADER
     }
 
-    class HeaderViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-        fun bindItem(item: String) {
-            itemView.text_header.text = item
-        }
-    }
-
-    class ItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-        fun bindItem(item: ProduceItem) {
-            itemView.text_name.text = item.name
-            itemView.text_type.text = item.type
-            displayImage(itemView.image_produce, item.imgUrl)
-        }
-
-        fun displayImage(imageView: ImageView, imgUrl: String) {
-            Glide.with(imageView)
-                    .load(imgUrl)
-                    .into(imageView)
-        }
+    @Suppress("UNCHECKED_CAST")
+    class SimpleViewHolder<out T : View>(itemView: T) : RecyclerView.ViewHolder(itemView) {
+        val view : T
+            get() = itemView as T
     }
 }
