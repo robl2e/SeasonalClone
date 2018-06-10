@@ -10,15 +10,32 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+
+    <ImageView
+        android:id="@+id/image_produce"
+        android:minHeight="72dp"
+        android:minWidth="72dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/text_name"
+        android:src="@drawable/ic_launcher_background"
+        tools:src="@drawable/ic_launcher_background"
+        />
+
     <TextView
         android:id="@+id/text_name"
         style="@style/TextAppearance.AppCompat.Title"
-        android:textColor="@color/colorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/text_type"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/image_produce"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="Apple" />
 
     <TextView
@@ -29,6 +46,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/text_name"
         app:layout_constraintTop_toBottomOf="@+id/text_name"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="Fruit" />
 
 
