@@ -6,13 +6,12 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.robl2e.seasonalclone.R
-import com.robl2e.seasonalclone.data.produce.Produce
 
 // synthetic == butterknife for kotlin
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import android.support.v7.widget.DividerItemDecoration
-
+import com.robl2e.seasonalclone.data.produce.ProduceItem
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,17 +34,15 @@ class MainActivity : AppCompatActivity() {
         produceList.addItemDecoration(itemDecoration)
 
         if (adapter == null) {
-            adapter = ProduceListAdapter(getTestItems())
+            adapter = ProduceListAdapter(loadProduceItems())
         }
         produceList.adapter = adapter
         adapter?.notifyDataSetChanged()
     }
 
-    private fun getTestItems() : List<Produce> {
-        return listOf(Produce("Apples", "Fruit", "Apples are red."),
-                Produce("Bananas", "Fruit", "Bananas are tasty."),
-                Produce("Broccoli", "Vegetable", "Broccoli looks like little trees."),
-                Produce("Carrot", "Vegetable", "Bunnies like carrots."))
+    private fun loadProduceItems() : List<ProduceItem> {
+        val produceRepo = ProduceRepository()
+        return produceRepo.loadProduceItems(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
